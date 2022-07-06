@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Layout from '../layout'
-const routes = [
+import layout from '../layout'
+const publicRoutes = [
   {
     path: '/',
     name: 'login',
@@ -8,8 +8,8 @@ const routes = [
   },
   {
     path: '/layout',
-    name: 'layout',
-    component: Layout,
+    component: () => import('../layout'),
+    redirect: '/homepage',
     children: [
       {
         path: '/homepage',
@@ -17,69 +17,48 @@ const routes = [
         component: () => import('../views/home-page')
       }
     ]
-  },
+  }
+]
+const privateRoutes = [
   {
     path: '/sys',
     name: 'sys',
-    component: Layout,
-    redirect: '/system',
+    component: layout,
+    redirect: '/system/menu',
     children: [
       {
-        path: '/system',
-        name: 'system',
-        component: () => import('../views/system'),
-        redirect: '/system/user',
-        children: [
-          {
-            path: '/system/user',
-            name: 'stystemUser',
-            component: () => import('../views/system-user'),
-            meta: {
-              title: '用户管理'
-            }
-          },
-          {
-            path: '/system/role',
-            name: 'stystemRole',
-            component: () => import('../views/system-role'),
-            meta: {
-              title: '角色管理'
-            }
-          },
-          {
-            path: '/system/menu',
-            name: 'stystemMenu',
-            component: () => import('../views/system-menu'),
-            meta: {
-              title: '菜单管理'
-            }
-          }
-        ]
+        path: '/system/menu',
+        name: 'systemMenu',
+        component: () => import('../views/system-menu')
+      },
+      {
+        path: '/system/role',
+        name: 'systemRole',
+        component: () => import('../views/system-role')
+      },
+      {
+        path: '/system/user',
+        name: 'systemUser',
+        component: () => import('../views/system-user')
       }
     ]
   },
-
   {
-    path: '/tooll',
-    name: 'tooll',
-    component: () => import('../views/tooll'),
-    redirect: '/tooll/dictionary',
+    path: '/sty',
+    name: 'sty',
+    component: () => layout,
     children: [
       {
         path: '/tooll/dictionary',
         name: 'toollDictionary',
-        component: () => import('../views/tooll-dictionary'),
-        meta: {
-          title: '数字字典'
-        }
+        component: () => import('../views/tooll-dictionary')
       }
     ]
   }
 ]
-
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes: [...publicRoutes, ...privateRoutes]
 })
 
 export default router

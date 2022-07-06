@@ -92,7 +92,7 @@ const handleLoginForm = async () => {
     if (valid) {
       const response = await store.dispatch('user/getLog', loginForm)
       console.log('response======>', response)
-      router.push('/about')
+      router.push('/layout')
     }
   })
 }
